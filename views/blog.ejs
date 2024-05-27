@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <title>Homepage</title>
+</head>
+<body>
+    <%- include('./partials/nav') %>
+    <div class="container mt-4">
+        <h1><%= blog.title %></h1>
+        <img src="<%= blog.coverImageURL %>" alt="blogImage" width="700" height="500" class="card">
+        <div class="container my-4">
+            <img src="<%= blog.createdBy.profileImageURL %>" alt="profileImageURL" width="50px">  
+            <span><%= blog.createdBy.fullName %></span>
+        </div>
+        <p><%= blog.body %></p>
+    </div>
+    <div class="container mt-4">
+        <h1>Comment (<%=comments.length  %>)</h1>
+       <% if (locals.user) { %>
+        <form action="/blog/comment/<%= blog._id %>" method="post">
+            <div class="mb-3">
+              <input type="text" class="form-control" name="content" placeholder="Enter your Comment">
+            </div>
+            <button type="submit" class="btn btn-sm btn-primary mb-3">Submit</button>
+          </form>
+       <% } %>
+    </div>
+    <div class="container my-4">
+        <div class="row d-flex">
+            <div class="">
+                <% comments.forEach(comment => { %>
+                    <div class="card p-3 my-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                      <div class="user d-flex flex-row align-items-center justify-content-center gap-2">
+                        <img src="<%= comment.createdBy.profileImageURL %>" width="30" class="user-img rounded-circle mr-2">
+                        <span><small class="font-weight-bold text-primary"><%= comment.createdBy.fullName %></small> <small class="font-weight-bold"></small> <%= comment.content %></span>
+                      </div>
+                      <small><%= dayjs(comment.createdAt).fromNow() %></small>
+                      </div>
+                    </div> 
+                <% }) %>       
+            </div>   
+        </div>
+    </div>
+
+    
+    <%- include('./partials/scripts') %>
+</body>
+</html>
